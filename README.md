@@ -12,7 +12,7 @@
 * buckup folder:    `/root/minecraft/buckup`
 
 ```bash
-docker run --name minecraft-bedrock-server -p 19132:19132/udp docheio/minecraft-ja:latest
+docker run --name minecraft-bedrock-server -p 25535:25535 docheio/minecraft-ja:latest
 ```
 
 # Author
