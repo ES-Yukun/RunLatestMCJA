@@ -2,6 +2,7 @@ FROM archlinux:latest
 
 ENV MEM=1G
 ENV RCONPASSWD=minecraft
+ENV STATICVER=void
 
 WORKDIR /root
 RUN pacman -Syyu jre-openjdk-headless jq --noconfirm
@@ -29,8 +30,9 @@ RUN pacman -S pkgconf make gcc cmake check libbsd git --noconfirm && git clone h
     cd /root/minecraft && \
     pacman -Rs pkgconf make gcc cmake check libbsd git --noconfirm
 
+COPY ./main.sh /root/
 COPY ./buckup.sh /root/
 
-RUN chmod +x  /root/buckup.sh
+RUN chmod +x /root/main.sh /root/buckup.sh 
 
-CMD ["bash", "-c", "/root/buckup.sh & java --add-modules=jdk.incubator.vector -Xmx$MEM -Xms$MEM -jar minecraft.jar nogui"]
+CMD ["bash", "-c", "/root/main.sh"]

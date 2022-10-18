@@ -2,9 +2,11 @@
 
 cd /root/minecraft;
 while true;
-  rcon -H 127.0.0.1 -p 25575 -P minecraft -m say Starting Backup...
-  rcon -H 127.0.0.1 -p 25575 -P minecraft -m say If you don\'t have disk space left, you should upgrade your plan.
-  rcon -H 127.0.0.1 -p 25575 -P minecraft -m say Disk $(df . | awk '{print $5}')
+  rcon -H 127.0.0.1 -p 25575 -P minecraft -m say "
+Starting Backup...
+If you don't have disk space left,
+You should upgrade your plan.
+disk usage fee: $(df . | awk '{print $5}' | grep -v "Use%")"
   do sleep 21600;
   if [ ! -d './buckup' ]; then
     mkdir ./buckup;
@@ -16,5 +18,4 @@ while true;
     find ./ -mtime +2 -name \"*.buckup\" -type d | xargs rm -rf;
   cd ..;
   rcon -H 127.0.0.1 -p 25575 -P minecraft -m save-on
-  rcon -H 127.0.0.1 -p 25575 -P minecraft -m say Backup done
 done
