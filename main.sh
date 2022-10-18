@@ -39,12 +39,10 @@ rm /root/buckup.sh
 rm /root/alart.sh
 
 curl -sLo /root/buckup.sh https://raw.githubusercontent.com/ES-Yukun/RunLatestMCJA/main/buckup.sh
-curl -sLo /root/alart.sh  https://raw.githubusercontent.com/ES-Yukun/RunLatestMCJA/main/alart.sh
+
 
 chmod +x /root/buckup.sh
-chmod +x /root/alart.sh
 
 /root/buckup.sh &
-/root/alart.sh &
 
 java --add-modules=jdk.incubator.vector -Xmx$MEM -Xms$MEM -jar minecraft.jar nogui

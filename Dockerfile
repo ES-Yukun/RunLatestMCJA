@@ -37,8 +37,6 @@ RUN pacman -S pkgconf make gcc cmake check libbsd git --noconfirm && \
         rm -rf ./*
 
 COPY ./main.sh /root/
-COPY ./buckup.sh /root/
-COPY ./alart.sh /root/
 
 WORKDIR /root
 RUN chmod +x ./main.sh
