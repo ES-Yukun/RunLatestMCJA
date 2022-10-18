@@ -6,32 +6,34 @@ if [ ! -e eula.txt ]; then
   cp /root/require-files/* ./
 fi
 
-if [ ! -e version.txt ]; then
+if [ -e version.txt ]; then
   if [ $VERSION = "void" ]; then
-    echo $(curl -sL https://api.purpurmc.org/v2/purpur | jq -r ".versions[-1]") >version.txt
-    curl -sLo minecraft.jar https://api.purpurmc.org/v2/purpur/$(cat version.txt)/latest/download
+    if [ $(cat version.txt | awk -F. '{printf "%2d%02d%02d", $1,$2,$3}') -lt $(curl -sL https://api.purpurmc.org/v2/purpur | jq -r '.versions[-1]' | awk -F. '{printf "%2d%02d%02d", $1,$2,$3}') ]; then
+      rm version.txt
+      echo $(curl -sL https://api.purpurmc.org/v2/purpur | jq -r ".versions[-1]") >version.txt
+      curl -sLo minecraft.jar https://api.purpurmc.org/v2/purpur/$(cat version.txt)/latest/download
+    fi
   fi
+
   if [ $VERSION != "void" ]; then
-    if [ $(curl -sL https://api.purpurmc.org/v2/purpur | jq -r ".versions[]|select(index(\"$VERSION\"))" | awk 'END{print}') != "" ]; then
-      echo $(curl -sL https://api.purpurmc.org/v2/purpur | jq -r ".versions[]|select(index(\"$STATICVER\"))" | awk 'END{print}') >version.txt
+    if [ $(echo $VERSION | awk -F. '{printf "%2d%02d%02d", $1,$2,$3}') -lt $(curl -sL https://api.purpurmc.org/v2/purpur | jq -r ".versions[-1]" | awk -F. '{printf "%2d%02d%02d", $1,$2,$3}') ]; then
+      rm version.txt
+      echo $(curl -sL https://api.purpurmc.org/v2/purpur | jq -r ".versions[-1]") >version.txt
       curl -sLo minecraft.jar https://api.purpurmc.org/v2/purpur/$(cat version.txt)/latest/download
     fi
   fi
 fi
 
-if [ $VERSION = "void" ]; then
-  if [ $(cat version.txt) -lt $(curl -sL https://api.purpurmc.org/v2/purpur | jq -r '.versions[-1]' | awk -F. '{printf "%2d%02d%02d", $1,$2,$3}') ]; then
-    rm version.txt
-    echo $(curl -sL https://api.purpurmc.org/v2/purpur | jq -r ".versions[-1]") > version.txt
-    curl -sLo minecraft.jar https://api.purpurmc.org/v2/purpur/$(cat version.txt)/latest/download
-  fi
-fi
-
-if [ $VERSION != "void" ]; then
-  if [ $(echo $VERSION | awk -F. '{printf "%2d%02d%02d", $1,$2,$3}') -lt $(curl -sL https://api.purpurmc.org/v2/purpur | jq -r ".versions[-1]" | awk -F. '{printf "%2d%02d%02d", $1,$2,$3}') ]; then
-    rm version.txt
+if [ ! -e version.txt ]; then
+  if [ $VERSION =  "void" ]; then
     echo $(curl -sL https://api.purpurmc.org/v2/purpur | jq -r ".versions[-1]") >version.txt
     curl -sLo minecraft.jar https://api.purpurmc.org/v2/purpur/$(cat version.txt)/latest/download
+  fi
+  if [ $VERSION != "void" ]; then
+    if [ $(curl -sL https://api.purpurmc.org/v2/purpur | jq -r ".versions[]|select(index(\"$VERSION\"))" | awk 'END{print}') != "" ]; then
+      echo $(curl -sL https://api.purpurmc.org/v2/purpur | jq -r ".versions[]|select(index(\"$VERSION\"))" | awk 'END{print}') >version.txt
+      curl -sLo minecraft.jar https://api.purpurmc.org/v2/purpur/$(cat version.txt)/latest/download
+    fi
   fi
 fi
 
