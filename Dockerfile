@@ -35,7 +35,6 @@ RUN pacman -S pkgconf make gcc cmake check libbsd git --noconfirm && \
         cd ../ && \
         pacman -Rs pkgconf make gcc cmake check libbsd git --noconfirm && \
         rm -rf ./*
-RUN bash
 COPY ./main.sh /root/
 
 WORKDIR /root
