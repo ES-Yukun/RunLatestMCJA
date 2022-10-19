@@ -10,7 +10,9 @@
 
 * minecraft folder: `/root/minecraft`
 * buckup folder:    `/root/minecraft/buckup`
-
+* ENV
+  - VERSION="void"
+  - MEM="1G"
 ```bash
 docker run --name minecraft-java-server -p 25565:25565 docheio/minecraft-ja:latest
 ```
@@ -21,5 +23,5 @@ docker run --name minecraft-java-server -p 25565:25565 docheio/minecraft-ja:late
   - SE-Yukun - yukun@team.anylinks.jp
  
 # License
- 
+
 "RunLatestMCBA is under [MIT license](https://en.wikipedia.org/wiki/MIT_License).
